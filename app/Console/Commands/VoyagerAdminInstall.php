@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 
 class VoyagerAdminInstall extends Command
 {
@@ -41,6 +42,14 @@ class VoyagerAdminInstall extends Command
 
     protected function loadDefaults() {
         if ($this->confirm('This will delete All current data. Are you sure?')) {
+
+            File::deleteDirectory(public_path('storage/users'));
+
+            $copySuccess = File::copyDirectory(public_path('storage/images/avatar'), public_path('storage/users'));
+
+            if ($copySuccess) {
+                $this->info('Images successfully copied to storage folder.');
+            }
 
             $this->call('migrate:fresh', [
                 '--seed' => true,
@@ -81,6 +90,10 @@ class VoyagerAdminInstall extends Command
 
             $this->call('db:seed', [
                 '--class' => 'UsersTableSeederCustom',
+            ]);
+
+            $this->call('db:seed', [
+                '--class' => 'SettingsTableSeederCustom',
             ]);
 
             $this->info('Dummy data has been installed!');
