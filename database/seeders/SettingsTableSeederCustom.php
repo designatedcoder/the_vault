@@ -16,7 +16,7 @@ class SettingsTableSeederCustom extends Seeder
         $setting = $this->findSetting('admin.bg_image');
         $setting->fill([
             'display_name' => 'Admin Background Image',
-            'value'        => '/images/bg_img.jpg',
+            'value'        => '/settings/bg_img.jpg',
             'details'      => '',
             'type'         => 'image',
             'order'        => 5,
@@ -46,7 +46,7 @@ class SettingsTableSeederCustom extends Seeder
         $setting = $this->findSetting('admin.icon_image');
         $setting->fill([
             'display_name' => 'Icon Image',
-            'value'        => '/images/vault_icon.jpg',
+            'value'        => '/settings/vault_icon.jpg',
             'details'      => '',
             'type'         => 'image',
             'order'        => 4,

@@ -37,66 +37,76 @@ class VoyagerAdminInstall extends Command
      * @return int
      */
     public function handle() {
-        $this->loadDefaults();
+        if ($this->confirm('This will delete All current data. Are you sure?')) {
+             $this->loadDefaults();
+            $this->info('Dummy data has been installed!');
+        }
     }
 
     protected function loadDefaults() {
-        if ($this->confirm('This will delete All current data. Are you sure?')) {
 
-            File::deleteDirectory(public_path('storage/users'));
+        File::deleteDirectory(public_path('storage/profile-photos'));
+        File::deleteDirectory(public_path('storage/settings'));
+        File::deleteDirectory(public_path('storage/pages'));
+        File::deleteDirectory(public_path('storage/posts'));
+        File::deleteDirectory(public_path('storage/users'));
 
-            $copySuccess = File::copyDirectory(public_path('storage/images/avatar'), public_path('storage/users'));
+        $this->callSilent('storage:link');
 
-            if ($copySuccess) {
-                $this->info('Images successfully copied to storage folder.');
-            }
+        $copySuccess = [
+            File::copyDirectory(public_path('storage/images/settings'), public_path('storage/settings')),
+            File::copyDirectory(public_path('storage/images/pages'), public_path('storage/pages')),
+            File::copyDirectory(public_path('storage/images/posts'), public_path('storage/posts')),
+            File::copyDirectory(public_path('storage/images/avatar'), public_path('storage/users')),
+        ];
 
-            $this->call('migrate:fresh', [
-                '--seed' => true,
-            ]);
-
-            $this->call('db:seed', [
-                '--class' => 'VoyagerDatabaseSeeder'
-            ]);
-
-            $this->call('db:seed', [
-                '--class' => 'VoyagerDummyDatabaseSeeder'
-            ]);
-
-            $this->call('db:seed', [
-                '--class' => 'DataTypesTableSeederCustom',
-            ]);
-
-            $this->call('db:seed', [
-                '--class' => 'DataRowsTableSeederCustom',
-            ]);
-
-            $this->call('db:seed', [
-                '--class' => 'MenuItemsTableSeederCustom',
-            ]);
-
-            $this->call('db:seed', [
-                '--class' => 'RolesTableSeederCustom',
-                '--force' => true,
-            ]);
-
-            $this->call('db:seed', [
-                '--class' => 'PermissionsTableSeederCustom',
-            ]);
-
-            $this->call('db:seed', [
-                '--class' => 'PermissionRoleTableSeederCustom',
-            ]);
-
-            $this->call('db:seed', [
-                '--class' => 'UsersTableSeederCustom',
-            ]);
-
-            $this->call('db:seed', [
-                '--class' => 'SettingsTableSeederCustom',
-            ]);
-
-            $this->info('Dummy data has been installed!');
+        if ($copySuccess) {
+            $this->info('Images successfully copied to storage folder.');
         }
+
+        $this->call('migrate:fresh', [
+            '--seed' => true,
+        ]);
+
+        $this->call('db:seed', [
+            '--class' => 'VoyagerDatabaseSeeder'
+        ]);
+
+        $this->call('db:seed', [
+            '--class' => 'VoyagerDummyDatabaseSeeder'
+        ]);
+
+        $this->call('db:seed', [
+            '--class' => 'DataTypesTableSeederCustom',
+        ]);
+
+        $this->call('db:seed', [
+            '--class' => 'DataRowsTableSeederCustom',
+        ]);
+
+        $this->call('db:seed', [
+            '--class' => 'MenuItemsTableSeederCustom',
+        ]);
+
+        $this->call('db:seed', [
+            '--class' => 'RolesTableSeederCustom',
+            '--force' => true,
+        ]);
+
+        $this->call('db:seed', [
+            '--class' => 'PermissionsTableSeederCustom',
+        ]);
+
+        $this->call('db:seed', [
+            '--class' => 'PermissionRoleTableSeederCustom',
+        ]);
+
+        $this->call('db:seed', [
+            '--class' => 'UsersTableSeederCustom',
+        ]);
+
+        $this->call('db:seed', [
+            '--class' => 'SettingsTableSeederCustom',
+        ]);
     }
 }
