@@ -38,6 +38,11 @@
                 </jet-button>
             </div>
         </form>
+
+        <div class="text-right font-semibold mt-4 hover:text-blue-800">
+            <a :href="route('voyager.login')">Login as admin!</a>
+        </div>
+
     </jet-authentication-card>
 </template>
 

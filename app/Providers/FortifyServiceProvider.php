@@ -2,15 +2,17 @@
 
 namespace App\Providers;
 
+use Inertia\Inertia;
+use Illuminate\Http\Request;
+use Laravel\Fortify\Fortify;
 use App\Actions\Fortify\CreateNewUser;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Cache\RateLimiting\Limit;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\ServiceProvider;
-use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Contracts\LoginResponse;
+use App\Actions\Fortify\UpdateUserProfileInformation;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -19,9 +21,8 @@ class FortifyServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
-    {
-        //
+    public function register() {
+        $this->registerResponseBindings();
     }
 
     /**
@@ -29,8 +30,7 @@ class FortifyServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
+    public function boot() {
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
@@ -42,6 +42,29 @@ class FortifyServiceProvider extends ServiceProvider
 
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
+        });
+    }
+
+    protected function registerResponseBindings() {
+        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
+            public function toResponse($request) {
+                $role = auth()->user()->role_id;
+                $url = route('voyager.dashboard');
+                switch($role) {
+                    case '5':
+                    case '4':
+                    case '3':
+                    case '1':
+                        return Inertia::location($url);
+                        break;
+                    case '2':
+                        return redirect()->intended(config('fortify.home'));
+                        break;
+                    default:
+                        return redirect('/');
+                        break;
+                }
+            }
         });
     }
 }
