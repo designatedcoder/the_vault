@@ -30,7 +30,7 @@ class DataRowsTableSeederCustom extends Seeder
             'delete'       => 1,
             'details'      => [
                 'validation' => [
-                    'rule' => 'required|max:25',
+                    'rule' => 'required|min:3|max:25'
                 ]
             ],
             'order'        => 2,
@@ -48,7 +48,7 @@ class DataRowsTableSeederCustom extends Seeder
             'delete'       => 1,
             'details'      => [
                 'validation' => [
-                    'rule' => 'required|max:25',
+                    'rule' => 'required|min:3|max:25'
                 ]
             ],
             'order'        => 3,
@@ -103,7 +103,7 @@ class DataRowsTableSeederCustom extends Seeder
             'delete'       => 1,
             'details'      => [
                 'validation' => [
-                    'rule' => 'required|max:25'
+                    'rule' => 'required|min:3|max:25'
                 ]
             ],
             'order'        => 2,
@@ -121,7 +121,7 @@ class DataRowsTableSeederCustom extends Seeder
             'delete'       => 1,
             'details'      => [
                 'validation' => [
-                    'rule' => 'required|max:25'
+                    'rule' => 'required|min:3|max:25'
                 ]
             ],
             'order'        => 2,
@@ -139,7 +139,7 @@ class DataRowsTableSeederCustom extends Seeder
             'delete'       => 1,
             'details'      => [
                 'validation' => [
-                    'rule' => 'required|max:25'
+                    'rule' => 'required|min:3|max:25'
                 ]
             ],
             'order'        => 5,
@@ -157,7 +157,7 @@ class DataRowsTableSeederCustom extends Seeder
             'delete'       => 1,
             'details'      => [
                 'validation' => [
-                    'rule' => 'required|max:25'
+                    'rule' => 'required|min:3|max:25'
                 ]
             ],
             'order'        => 2,
@@ -201,7 +201,7 @@ class DataRowsTableSeederCustom extends Seeder
             'delete'       => 1,
             'details'      => [
                 'validation' => [
-                    'rule' => 'required|max:25'
+                    'rule' => 'required|min:3|max:25'
                 ]
             ],
             'order'        => 5,
