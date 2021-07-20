@@ -48,7 +48,7 @@ class DataRowsTableSeederCustom extends Seeder
             'delete'       => 1,
             'details'      => [
                 'validation' => [
-                    'rule' => 'required|min:3|max:25'
+                    'rule' => 'required|email|min:3|max:25'
                 ]
             ],
             'order'        => 3,
